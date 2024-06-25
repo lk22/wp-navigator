@@ -43,8 +43,6 @@
          * @return void
          */
         wp_navigator.triggerEvents = () => {
-            // initialize typeahead 
-            console.log(wp_navigator.menu)
             $('#wp-navigator-search').typeahead({
                 hint: true,
                 highlight: true,
@@ -54,8 +52,6 @@
                 source: wp_navigator.substringMathcer(wp_navigator.menu),
                 templates: {
                     suggestion: (data) => {
-                        console.log(data[2])
-
                         return `
                             <div class="tt-suggestions">
                                 <a href="${data[2]}"><span class="dashicons ${data[6]}" style="margin-right:5px;"></span>${data[0]}</a>
@@ -67,17 +63,14 @@
 
             // add event handler for showing the navigator modal        
             wp_navigator.keyDown((e) => {
-                // make a delay of 1 second before processing the query
-                console.log([
-                    e.ctrlKey,
-                    e.keyCode
-                ])
-                // if ctrl + n is pressed
                 if ( e.ctrlKey && e.keyCode === 78 ) {
                     wp_navigator.showNavigatorModal();
                 }
             })
 
+            /**
+             * Add event handler for hiding the modal
+             */
             wp_navigator.container.on('click', function(event) {
                 if (!$(event.target).closest('#wp-navigator-modal').length) {
                     // The click was outside of #wp-navigator-modal, so hide the modal
@@ -97,6 +90,11 @@
             modal.find('input').focus();
         }
 
+        /**
+         * Hide the navigator modal
+         * 
+         * @return void
+         */
         wp_navigator.hideNavigatorModal = () => {
             const modal = $('#wp-navigator-modal');
             modal.hide();
