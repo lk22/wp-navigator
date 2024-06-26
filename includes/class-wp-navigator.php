@@ -16,7 +16,7 @@
      * Main WP Navigator plugin class
      */
     class WP_Navigator {
-        
+
         /**
          * Plugin Constructor 
          */
@@ -34,8 +34,11 @@
             add_action('wp_ajax_wp_navigator_search', [$this, 'wp_navigator_search']);
 
             add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
+            add_action('wp_enqueue_scripts', [$this, 'admin_enqueue_scripts']); // register the navigator when on the frontend
             add_action('admin_enqueue_styles', [$this, 'admin_enqueue_styles']);
             add_action('admin_footer', [$this, 'register_navigator']);
+            // register the navigator when on the frontend
+            add_action('wp_footer', [$this, 'register_navigator']);
             add_action('admin_init', [$this, 'store_menu_structure']);
         }
 
@@ -45,7 +48,7 @@
          * @return void
          */
         public function admin_enqueue_scripts(): void {
-            wp_register_script('wp-navigator-admin-typeahead', WP_NAVIGATOR_URL . 'assets/js/dependencies/typeahead.js');
+            wp_register_script('wp-navigator-admin-typeahead', WP_NAVIGATOR_URL . 'assets/js/dependencies/typeahead.js', ['jquery']);
             wp_enqueue_script('wp-navigator-admin-typeahead');
             wp_register_script('wp-navigator-admin', WP_NAVIGATOR_URL . 'assets/js/admin.js', ['jquery'], WP_NAVIGATOR_VERSION, true);
             wp_enqueue_script('wp-navigator-admin');
@@ -182,7 +185,10 @@
          *
          * @return void
          */
-        public function register_navigator(): void {
+        public function register_navigator() {
+            if ( ! user_can( get_current_user_id(), 'manage_options' ) ) {
+                return false;
+            }
             ?>
                 <style>
                     #wp-navigator-modal {
@@ -228,6 +234,7 @@
 
                     .twitter-typeahead {
                         width: 100%;
+                        font-size: 18px;
                     }
 
                     .tt-menu {
@@ -236,7 +243,7 @@
                     }
 
                     .tt-suggestions {
-                        width: 100%;
+                        width: 97.5%;
                         background: #fff;
                         border: 1px solid #ccc;
                         border-radius: 5px;
@@ -252,6 +259,21 @@
                         color: #1a1a1a;
                         text-decoration: none;
                         font-size: 18px;
+                        width: 100% !important;
+                        height: 100% !important;
+                        padding: 10px !important;
+                        display: inline-block;
+                    }
+                    .tt-suggestions:hover {
+                        background: #0073AA;
+                        transition: ease-in-out 0.2s all;
+                    }
+                    .tt-suggestions:hover a,
+                    .tt-suggestions:hover a span.dashicons {
+                        color: #f9f9f9;
+                    }
+                    .tt-suggestions:not(:hover) {
+                        transition: ease-in-out 0.2s all;
                     }
                 </style>
             <?php
@@ -259,6 +281,9 @@
                 echo '<div class="wp-navigator-modal-dialog">';
                     echo '<div class="dialog-header">';
                         echo '<h1>Wordpress Admin Navigator</h1>';
+                        echo '<p>Press control + n (macos)</p>';
+                        echo '<p>Press ctrl + n (windows)</p>';
+                        echo '<p>For closing the navigator</p>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
                         echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action">';

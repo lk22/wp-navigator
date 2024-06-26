@@ -51,11 +51,26 @@
                 source: wp_navigator.substringMathcer(wp_navigator.menu),
                 templates: {
                     suggestion: (data) => {
-                        return `
-                            <div class="tt-suggestions">
-                                <a href="${data[2]}"><span class="dashicons ${data[6]}" style="margin-right:5px;"></span>${data[0]}</a>
-                            </div>
-                        `;
+                        const icon = data[6];
+                        const link = data[2];
+                        const title = data[0];
+
+                        // return empty if link is seperator1
+                        if ( link === 'separator1' ) {
+                            return '';
+                        }
+
+                        // give me the tabindex
+                        let tabindex = 0;
+
+                        let html = `<div class="tt-suggestions" tabindex="${tabindex}">`;
+                        html += `<a href="${data[2]}">`;
+                        if ( data.includes(icon) ) {
+                            html += `<span class="dashicons ${icon}" style="margin-right:5px;"></span>`;
+                        }
+                        html += `${title}</a></div>`;
+
+                        return html;
                     }
                 },
                 display: (data) => {
@@ -66,7 +81,7 @@
             // add event handler for showing the navigator modal        
             wp_navigator.keyDown((e) => {
                 if ( e.ctrlKey && e.keyCode === 78 ) {
-                    wp_navigator.showNavigatorModal();
+                    wp_navigator.toggleNavigatorModal();
                 }
             })
 
@@ -86,10 +101,13 @@
          * 
          * @return void
          */
-        wp_navigator.showNavigatorModal = () => {
+        wp_navigator.toggleNavigatorModal = () => {
             const modal = $('#wp-navigator-modal');
-            modal.show();
-            modal.find('input').focus();
+            modal.toggle();
+            if (modal.is(":visible")) {
+                modal.find('input').focus(); // set focus when showing the modal
+            }
+            modal.find('input').val() // reset input value
         }
 
         /**
