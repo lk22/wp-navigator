@@ -31,7 +31,6 @@
          * @return void
          */
         wp_navigator.init = () => {
-            console.log("wp_navigator plugin initialized")
             wp_navigator.menu = wp_navigator_plugin.full_menu;
             wp_navigator.submenu = wp_navigator_plugin.submenu;
             wp_navigator.triggerEvents();
@@ -58,8 +57,11 @@
                             </div>
                         `;
                     }
+                },
+                display: (data) => {
+                    return data[0];
                 }
-            });
+            })
 
             // add event handler for showing the navigator modal        
             wp_navigator.keyDown((e) => {

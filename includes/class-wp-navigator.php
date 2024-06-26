@@ -16,10 +16,7 @@
      * Main WP Navigator plugin class
      */
     class WP_Navigator {
-
-        public $menu;
-        public $submenu;
-
+        
         /**
          * Plugin Constructor 
          */
