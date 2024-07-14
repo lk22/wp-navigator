@@ -1,9 +1,7 @@
 'use strict';
 ;(($) => {
     $(document).ready(() => {
-
         
-
         /**
          * wp_navigator plugin object
          */
@@ -13,7 +11,8 @@
             ENTER: 13,
             UP: 38,
             DOWN: 40,
-            ESCAPE: 27
+            ESCAPE: 27,
+            N: 78,
         }
 
         wp_navigator.substringMathcer = (string) => {
@@ -110,9 +109,12 @@
                 }
             });
 
-            // add event handler for showing the navigator modal        
+            // add event handler for showing the navigator modal
             wp_navigator.keyDown((e) => {
-                if ( e.ctrlKey && e.keyCode === 78 ) {
+                if ( 
+                    (e.ctrlKey && e.keyCode === wp_navigator.keycodes.N) || 
+                    (e.keyCode === wp_navigator.keycodes.ESCAPE) 
+                ) {
                     wp_navigator.toggleNavigatorModal();
                 }
             })

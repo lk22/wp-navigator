@@ -58,13 +58,27 @@
 
             $fullSubMenu = [];
 
-            foreach ($menu as $item) {
-                if ( ! empty($submenu[$item[2]]) ) {
-                    $fullSubMenu = array_merge($fullSubMenu, $submenu[$item[2]]);
+            if ( $menu ) {
+                foreach ($menu as $item) {
+                    if ( ! empty($submenu[$item[2]]) ) {
+                        $fullSubMenu = array_merge($fullSubMenu, $submenu[$item[2]]);
+                    }
                 }
             }
 
-            $fullMenuTree = array_merge($menu, $fullSubMenu);
+            if ( $submenu ) {
+                foreach ($submenu as $item) {
+                    $fullSubMenu = array_merge($fullSubMenu, $item);
+                }
+            }
+
+            // prevent errors if the menu or submenu is not countable
+            if ( (is_countable($menu) || is_object($menu)) && (is_countable($fullSubMenu) || is_object($fullSubMenu)) ) {
+                $fullMenuTree = array_merge($menu, $fullSubMenu);
+            } else {
+                $fullMenuTree = [];
+            }
+            
             $postsArray = [];
             $pagesArray = [];
             $categoriesArray = [];
