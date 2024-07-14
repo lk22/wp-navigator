@@ -31,8 +31,7 @@
          */
         public function init(): void {
             add_filter('admin_menu', [$this, 'admin_menu']);
-            add_action('wp_ajax_wp_navigator_search', [$this, 'wp_navigator_search']);
-
+            // register actions
             add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
             add_action('wp_enqueue_scripts', [$this, 'admin_enqueue_scripts']); // register the navigator when on the frontend
             add_action('admin_enqueue_styles', [$this, 'admin_enqueue_styles']);
@@ -90,10 +89,12 @@
             ]);
 
             foreach ($posts as $post) {
+                $postUrl = "post.php?post=" . $post->ID . "&action=edit";
+                $url = (is_admin()) ? admin_url($postUrl) : admin_url('/wp-admin/' . $postUrl);
                 $postsArray[] = [
                     "Post: " . $post->post_title,
                     "",
-                    admin_url('post.php?post=' . $post->ID . '&action=edit'),
+                    $url
                 ];
             }
 
@@ -103,10 +104,12 @@
             ]);
 
             foreach ($pages as $page) {
+                $pageUrl = "post.php?post=" . $page->ID . "&action=edit";
+                $url = (is_admin()) ? admin_url($pageUrl) : admin_url($pageUrl);
                 $pagesArray[] = [
                     "Page: " . $page->post_title,
                     "",
-                    admin_url('post.php?post=' . $page->ID . '&action=edit'),
+                    $url
                 ];
             }
 
@@ -116,10 +119,12 @@
             ]);
 
             foreach ( $categories as $category ) {
+                $categoryUrl = "edit-tags.php?taxonomy=category&tag_ID=" . $category->term_id . "&post_type=post";
+                $url = (is_admin()) ? admin_url($categoryUrl) : admin_url($categoryUrl);
                 $categoriesArray[] = [
                     "Category: " . $category->name,
                     "",
-                    admin_url('/edit-tags.php?taxonomy=category&tag_ID=' . $category->term_id . '&post_type=post'),
+                    $url
                 ];
             }
 
@@ -129,18 +134,21 @@
             ]);
 
             foreach ( $tags as $tag ) {
+                $tagUrl = "edit-tags.php?taxonomy=post_tag&tag_ID=" . $tag->term_id . "&post_type=post";
+                $url = (is_admin()) ? admin_url($tagUrl) : admin_url('/wp-admin/' . $tagUrl);
+                var_dump($url);
                 $tagsArray[] = [
                     "Tag: " . $tag->name,
                     "",
-                    admin_url('/edit-tags.php?taxonomy=post_tag&tag_ID=' . $tag->term_id . '&post_type=post'),
+                    $url
                 ];
             }
 
             $fullMenuTree = array_merge(
-                $fullMenuTree, 
-                $postsArray, 
-                $pagesArray, 
-                $categoriesArray, 
+                $fullMenuTree,
+                $postsArray,
+                $pagesArray,
+                $categoriesArray,
                 $tagsArray
             );
 
@@ -179,9 +187,6 @@
          * @return void
          */
         public function admin_page() : void {
-            echo "<pre>";
-            print_r([$this->menu, $this->submenu]);
-            echo "</pre>";
             echo '<h1>WP Navigator</h1>';
             echo '<p>WP Navigator is a powerful plugin that allows you to create an unlimited number of navigation menus for your website.</p>';
             echo '<p>Version: 1.0.0</p>';
