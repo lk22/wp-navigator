@@ -1,10 +1,20 @@
 'use strict';
 ;(($) => {
     $(document).ready(() => {
+
+        
+
         /**
          * wp_navigator plugin object
          */
         const wp_navigator = {};
+
+        wp_navigator.keycodes = {
+            ENTER: 13,
+            UP: 38,
+            DOWN: 40,
+            ESCAPE: 27
+        }
 
         wp_navigator.substringMathcer = (string) => {
             return function findMatches(q, cb) {
@@ -63,6 +73,11 @@
                         // give me the tabindex
                         let tabindex = 0;
 
+                        // if the link is a submenu
+                        if ( link === 'submenu' ) {
+                            tabindex = -1;
+                        }
+                        
                         let html = `<div class="tt-suggestions" tabindex="${tabindex}">`;
                         html += `<a href="${data[2]}">`;
                         if ( data.includes(icon) ) {
@@ -77,6 +92,23 @@
                     return data[0];
                 }
             })
+
+            // Adjusted event handler for pressing enter on tt-cursor element
+            $('.tt-suggestions').on('keydown', function(e) {
+                // Check if the Enter key is pressed
+                if (e.keyCode === wp_navigator.keycodes.ENTER || e.which === 13) {
+                    console.log("Enter key pressed");
+                    // Ensure the element is focused; this is a basic check, might need adjustment for complex scenarios
+                    if ($(this).hasClass('tt-cursor')) {
+                        console.log("Enter key pressed on focused element");
+                        const link = $(this).find('a').attr('href');
+                        if (link && link !== '#') {
+                            window.location.href = link;
+                            e.preventDefault(); // Prevent default to stop any further action
+                        }
+                    }
+                }
+            });
 
             // add event handler for showing the navigator modal        
             wp_navigator.keyDown((e) => {

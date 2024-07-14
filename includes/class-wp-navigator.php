@@ -2,7 +2,7 @@
     /**
      * Plugin Name: WP Navigator
      * Plugin URI: http://www.wp-navigator.com
-     * Description: WP Navigator is a powerful plugin that allows you to create an unlimited number of navigation menus for your website.
+     * Description: WP Navigator is a powerful plugin that allows you to navigate through your admin panel with ease.
      * Version: 1.0.0
      * Author: Leo Knudsen
      * Author URI: http://www.wp-navigator.com
@@ -105,7 +105,7 @@
                 $categoriesArray[] = [
                     "Category: " . $category->name,
                     "",
-                    admin_url('edit-tags.php?taxonomy=category&tag_ID=' . $category->term_id . '&post_type=post'),
+                    admin_url('/edit-tags.php?taxonomy=category&tag_ID=' . $category->term_id . '&post_type=post'),
                 ];
             }
 
@@ -118,7 +118,7 @@
                 $tagsArray[] = [
                     "Tag: " . $tag->name,
                     "",
-                    admin_url('edit-tags.php?taxonomy=post_tag&tag_ID=' . $tag->term_id . '&post_type=post'),
+                    admin_url('/edit-tags.php?taxonomy=post_tag&tag_ID=' . $tag->term_id . '&post_type=post'),
                 ];
             }
 
@@ -165,7 +165,6 @@
          * @return void
          */
         public function admin_page() : void {
-            
             echo "<pre>";
             print_r([$this->menu, $this->submenu]);
             echo "</pre>";
@@ -189,104 +188,23 @@
             if ( ! user_can( get_current_user_id(), 'manage_options' ) ) {
                 return false;
             }
-            ?>
-                <style>
-                    #wp-navigator-modal {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0, 0, 0, 0.5);
-                        display: none;
-                        z-index: 9999;
-                    }
+            
+            wp_enqueue_style('wp-navigation-admin', WP_NAVIGATOR_URL . 'assets/css/admin.css', WP_NAVIGATOR_VERSION);
 
-                    #wp-navigator-modal .wp-navigator-modal-dialog {
-                        position: absolute;
-                        left: 50%;
-                        top: 50%;
-                        transform: translate(-50%, -50%);
-                        background: #fff;
-                        padding: 20px;
-                        border-radius: 5px;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-                        width: 800px;
-                        clear: both;
-                    }
-
-                    .wp-navigator-modal-dialog h1 {
-                        font-size: 18px;
-                        margin: 0 0 10px;
-                    }
-
-                    .wp-navigator-modal-dialog input {
-                        width: 100%;
-                        padding: 10px;
-                        margin: 10px 0;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                    }
-
-                    .wp-navigator-modal-dialog .dialog-body {
-                        height: auto;
-                    }
-
-                    .twitter-typeahead {
-                        width: 100%;
-                        font-size: 18px;
-                    }
-
-                    .tt-menu {
-                        height: auto;
-                        position: relative !important;
-                    }
-
-                    .tt-suggestions {
-                        width: 97.5%;
-                        background: #fff;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                        position: relative;
-                        top: 100%;
-                        left: 0;
-                        z-index: 9999;
-                        margin-bottom: 10px !important;
-                        padding: 10px !important;
-                    }
-
-                    .tt-suggestion a {
-                        color: #1a1a1a;
-                        text-decoration: none;
-                        font-size: 18px;
-                        width: 100% !important;
-                        height: 100% !important;
-                        padding: 10px !important;
-                        display: inline-block;
-                    }
-                    .tt-suggestions:hover {
-                        background: #0073AA;
-                        transition: ease-in-out 0.2s all;
-                    }
-                    .tt-suggestions:hover a,
-                    .tt-suggestions:hover a span.dashicons {
-                        color: #f9f9f9;
-                    }
-                    .tt-suggestions:not(:hover) {
-                        transition: ease-in-out 0.2s all;
-                    }
-                </style>
-            <?php
             echo '<div id="wp-navigator-modal">';
                 echo '<div class="wp-navigator-modal-dialog">';
                     echo '<div class="dialog-header">';
+                        // echo the wordpress logo here
+                        echo "<div class='logo'>";
+                            echo "<img src='" . admin_url('images/wordpress-logo.svg') . "' alt='Wordpress Logo'>";
+                        echo "</div>";
                         echo '<h1>Wordpress Admin Navigator</h1>';
                         echo '<p>Press control + n (macos)</p>';
                         echo '<p>Press ctrl + n (windows)</p>';
                         echo '<p>For closing the navigator</p>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
-                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action">';
+                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="">';
                         echo '<div id="wp-navigator-results"></div>';
                     echo '</div>';
                 echo '</div>';
