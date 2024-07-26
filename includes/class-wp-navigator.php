@@ -136,7 +136,7 @@
             foreach ( $tags as $tag ) {
                 $tagUrl = "edit-tags.php?taxonomy=post_tag&tag_ID=" . $tag->term_id . "&post_type=post";
                 $url = (is_admin()) ? admin_url($tagUrl) : admin_url('/wp-admin/' . $tagUrl);
-                var_dump($url);
+
                 $tagsArray[] = [
                     "Tag: " . $tag->name,
                     "",
