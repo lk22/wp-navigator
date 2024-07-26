@@ -56,10 +56,6 @@
 
             $menu = get_transient('admin_menu');
             $submenu = get_transient('admin_submenu');
-            echo "<pre>";
-            var_dump($menu);
-            echo "</pre>";
-            die(); 
 
             $fullSubMenu = [];
 
