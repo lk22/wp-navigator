@@ -1,3 +1,18 @@
+#wp-navigator-button {
+    height: 70px;
+    width: 70px;
+    position: fixed;
+    bottom: 70px;
+    left: 40px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    z-index: 999;
+    cursor: pointer;
+}
+
 #wp-navigator-modal {
     position: fixed;
     top: 0;

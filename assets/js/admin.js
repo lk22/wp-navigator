@@ -13,6 +13,7 @@
             DOWN: 40,
             ESCAPE: 27,
             N: 78,
+            F: 70
         }
 
         wp_navigator.substringMathcer = (string) => {
@@ -109,12 +110,26 @@
                 }
             });
 
+            $('#wp-navigator-button').on('click', (e) => {
+                console.log({e})
+                const modal = $('#wp-navigator-modal');
+                modal.toggle();
+            });
+
             // add event handler for showing the navigator modal
             wp_navigator.keyDown((e) => {
                 if ( 
-                    (e.ctrlKey && e.keyCode === wp_navigator.keycodes.N) || 
-                    (e.keyCode === wp_navigator.keycodes.ESCAPE) 
+                    (e.ctrlKey && e.keyCode === wp_navigator.keycodes.F)
                 ) {
+                    wp_navigator.toggleNavigatorModal();
+                }
+
+                if ( e.keyCode === wp_navigator.keycodes.ESCAPE ) {
+                    wp_navigator.hideNavigatorModal();
+                }
+
+                // make sure to toggle modal when pressing following combo on windows ctrl + shift + f
+                if ( e.ctrlKey && e.shiftKey && e.keyCode === wp_navigator.keycodes.F ) {
                     wp_navigator.toggleNavigatorModal();
                 }
             })

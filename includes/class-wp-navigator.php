@@ -14,6 +14,8 @@
 
     /**
      * Main WP Navigator plugin class
+     * 
+     * @todo add dynamic support for navigation for all custom post types
      */
     class WP_Navigator {
 
@@ -54,6 +56,10 @@
 
             $menu = get_transient('admin_menu');
             $submenu = get_transient('admin_submenu');
+            echo "<pre>";
+            var_dump($menu);
+            echo "</pre>";
+            die(); 
 
             $fullSubMenu = [];
 
@@ -193,8 +199,8 @@
             echo '<p>Author: Leo Knudsen</p>';
             echo '<h2>Quick usage guide</h2>';
             echo "<p>use following keystrokes to open your navigator</p>";
-            echo "<p>ctrl + shift + n</p>";
-            echo "<p>command + f</p>";
+            echo "<p>ctrl + shift + f</p>";
+            echo "<p>control + f</p>";
             echo "<p>This will open you navigation menu for quickly move to your action</p>";
         }
 
@@ -209,7 +215,9 @@
             }
             
             wp_enqueue_style('wp-navigation-admin', WP_NAVIGATOR_URL . 'assets/css/admin.css', WP_NAVIGATOR_VERSION);
-
+            echo '<div id="wp-navigator-button">
+                <img src="' . admin_url('images/wordpress-logo.svg') . '" alt="Wordpress Logo">
+            </div>';
             echo '<div id="wp-navigator-modal">';
                 echo '<div class="wp-navigator-modal-dialog">';
                     echo '<div class="dialog-header">';
