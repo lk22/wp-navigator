@@ -57,7 +57,13 @@
             $menu = get_transient('admin_menu');
             $submenu = get_transient('admin_submenu');
 
+            // get all post types
+            $allPostTypes = get_post_types(['public' => true]);
+            $allTaxonomy = get_taxonomies(['public' => true]);
+            
             $fullSubMenu = [];
+            $postTypesArray = [];
+            $taxonomiesArray = [];
 
             if ( $menu ) {
                 foreach ($menu as $item) {
@@ -79,79 +85,45 @@
             } else {
                 $fullMenuTree = [];
             }
-            
-            $postsArray = [];
-            $pagesArray = [];
-            $categoriesArray = [];
-            $tagsArray = [];
 
-            $posts = get_posts([
-                'post_type' => 'post',
-                'posts_per_page' => -1,
-            ]);
+            foreach ( $allPostTypes as $postType ) {
+                $types = get_posts([
+                    "post_type" => $postType,
+                    "posts_per_page" => -1
+                ]);
 
-            foreach ($posts as $post) {
-                $postUrl = "post.php?post=" . $post->ID . "&action=edit";
-                $url = (is_admin()) ? admin_url($postUrl) : admin_url('/wp-admin/' . $postUrl);
-                $postsArray[] = [
-                    "Post: " . $post->post_title,
-                    "",
-                    $url
-                ];
+                foreach ( $types as $type ) {
+                    $postUrl = "post.php?post=" . $type->ID . "&action=edit";
+                    $url = (is_admin()) ? admin_url($postUrl) : admin_url('/wp-admin/' . $postUrl);
+                    $postTypesArray[] = [
+                        ucfirst($postType) .": " . $type->post_title,
+                        "",
+                        $url
+                    ];
+                }
             }
 
-            $pages = get_posts([
-                'post_type' => 'page',
-                'posts_per_page' => -1,
-            ]);
+            foreach ( $allTaxonomy as $taxonomy ) {
+                $types = get_terms([
+                    "taxonomy" => $taxonomy,
+                    "hide_empty" => false
+                ]);
 
-            foreach ($pages as $page) {
-                $pageUrl = "post.php?post=" . $page->ID . "&action=edit";
-                $url = (is_admin()) ? admin_url($pageUrl) : admin_url($pageUrl);
-                $pagesArray[] = [
-                    "Page: " . $page->post_title,
-                    "",
-                    $url
-                ];
-            }
-
-            $categories = get_terms([
-                'taxonomy' => 'category',
-                'hide_empty' => false,
-            ]);
-
-            foreach ( $categories as $category ) {
-                $categoryUrl = "edit-tags.php?taxonomy=category&tag_ID=" . $category->term_id . "&post_type=post";
-                $url = (is_admin()) ? admin_url($categoryUrl) : admin_url($categoryUrl);
-                $categoriesArray[] = [
-                    "Category: " . $category->name,
-                    "",
-                    $url
-                ];
-            }
-
-            $tags = get_terms([
-                'taxonomy' => 'post_tag',
-                'hide_empty' => false,
-            ]);
-
-            foreach ( $tags as $tag ) {
-                $tagUrl = "edit-tags.php?taxonomy=post_tag&tag_ID=" . $tag->term_id . "&post_type=post";
-                $url = (is_admin()) ? admin_url($tagUrl) : admin_url('/wp-admin/' . $tagUrl);
-
-                $tagsArray[] = [
-                    "Tag: " . $tag->name,
-                    "",
-                    $url
-                ];
+                foreach ( $types as $type ) {
+                    $taxUrl = "edit-tags.php?taxonomy=post_tag&tag_ID=" . $type->term_id . "&post_type=post";
+                    $url = (is_admin()) ? admin_url($taxUrl) : admin_url('/wp-admin/' . $taxUrl);
+                    $taxonomiesArray[] = [
+                        "Taxonomy: " . $type->name,
+                        "",
+                        $url
+                    ];
+                }
             }
 
             $fullMenuTree = array_merge(
                 $fullMenuTree,
-                $postsArray,
-                $pagesArray,
-                $categoriesArray,
-                $tagsArray
+                $postTypesArray,
+                $taxonomiesArray
             );
 
             wp_localize_script('wp-navigator-admin', 'wp_navigator_plugin', [
