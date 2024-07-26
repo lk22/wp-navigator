@@ -54,16 +54,5 @@ if ( ! class_exists('WP_Navigator') ) {
         return new WP_Navigator();
     }
 }
-function register_type() {
-    register_post_type('magazine', array(
-        'labels' => array(
-            'name' => __('Magazines'),
-            'singular_name' => __('Magazine')
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'supports' => array('title', 'editor', 'thumbnail'),
-    ));
-}
-add_action('init', 'register_type');
+
 add_action( 'plugins_loaded', 'wp_navigator' );
