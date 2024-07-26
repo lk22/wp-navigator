@@ -60,7 +60,7 @@
             // get all post types
             $allPostTypes = get_post_types(['public' => true]);
             $allTaxonomy = get_taxonomies(['public' => true]);
-            
+
             $fullSubMenu = [];
             $postTypesArray = [];
             $taxonomiesArray = [];
@@ -183,10 +183,13 @@
             }
             
             wp_enqueue_style('wp-navigation-admin', WP_NAVIGATOR_URL . 'assets/css/admin.css', WP_NAVIGATOR_VERSION);
-            echo '<div id="wp-navigator-button">
-                <img src="' . admin_url('images/wordpress-logo.svg') . '" alt="Wordpress Logo">
+            echo '<div id="wp-navigator-wrapper">
+                <div id="wp-navigator-button">
+                    <img src="' . admin_url('images/wordpress-logo.svg') . '" alt="Wordpress Logo">
+                    <span>Open WP Navigator</span>
+                </div>
             </div>';
-            echo '<div id="wp-navigator-modal">';
+            echo '<div id="wp-navigator-modal" style="display: none;">';
                 echo '<div class="wp-navigator-modal-dialog">';
                     echo '<div class="dialog-header">';
                         // echo the wordpress logo here

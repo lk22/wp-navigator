@@ -110,10 +110,8 @@
                 }
             });
 
-            $('#wp-navigator-button').on('click', (e) => {
-                console.log({e})
-                const modal = $('#wp-navigator-modal');
-                modal.toggle();
+            wp_navigator.container.find('#wp-navigator-button').on('click', (e) => {
+                wp_navigator.toggleNavigatorModal();
             });
 
             // add event handler for showing the navigator modal
@@ -133,16 +131,6 @@
                     wp_navigator.toggleNavigatorModal();
                 }
             })
-
-            /**
-             * Add event handler for hiding the modal
-             */
-            wp_navigator.container.on('click', function(event) {
-                if (!$(event.target).closest('#wp-navigator-modal').length) {
-                    // The click was outside of #wp-navigator-modal, so hide the modal
-                    wp_navigator.hideNavigatorModal();
-                }
-            });
         }
 
         /**
@@ -152,11 +140,11 @@
          */
         wp_navigator.toggleNavigatorModal = () => {
             const modal = $('#wp-navigator-modal');
-            modal.toggle();
             if (modal.is(":visible")) {
                 modal.find('input').focus(); // set focus when showing the modal
             }
             modal.find('input').val() // reset input value
+            modal.toggle();
         }
 
         /**
