@@ -3,7 +3,7 @@
     width: 70px;
     position: fixed;
     bottom: 70px;
-    left: 40px;
+    right: 40px;
     background: white;
     display: flex;
     align-items: center;
@@ -11,10 +11,10 @@
     border-radius: 50px;
     z-index: 1;
     cursor: pointer;
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
-    -ms-border-radius: 50px;
-    -o-border-radius: 50px;
+    -webkit-border-radius:;
+    -moz-border-radius:;
+    -ms-border-radius:;
+    -o-border-radius:;
 }
 
 #wp-navigator-wrapper #wp-navigator-button {
@@ -30,7 +30,7 @@
 #wp-navigator-wrapper #wp-navigator-button span {
     position: absolute;
     top: -20px;
-    left: 50%;
+    right: 50%;
     color: #1a1a1a;
     background: #f9f9f9;
     padding-inline: 1rem;
