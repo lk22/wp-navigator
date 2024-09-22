@@ -197,9 +197,13 @@
                             echo "<img src='" . admin_url('images/wordpress-logo.svg') . "' alt='Wordpress Logo'>";
                         echo "</div>";
                         echo '<h1>Wordpress Admin Navigator</h1>';
-                        echo '<p>Press control + n (macos)</p>';
+                        echo '<p>Press control + f (macos)</p>';
                         echo '<p>Press ctrl + n (windows)</p>';
-                        echo '<p>For closing the navigator</p>';
+                        echo '<p>For closing the navigator press ESC</p>';
+                        echo '<div class="quick-suggestions">';
+                            echo '<h2>Quick Suggestions</h2>';
+                                echo '<span data-suggestion="add-new-post">Add new post</span>';
+                                echo '<span data-suggestion="add-new-page" style="padding-left: 5px;">Add new page</span>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
                         echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="">';
