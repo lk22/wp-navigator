@@ -97,10 +97,8 @@
             $('.tt-suggestions').on('keydown', function(e) {
                 // Check if the Enter key is pressed
                 if (e.keyCode === wp_navigator.keycodes.ENTER || e.which === 13) {
-                    console.log("Enter key pressed");
                     // Ensure the element is focused; this is a basic check, might need adjustment for complex scenarios
                     if ($(this).hasClass('tt-cursor')) {
-                        console.log("Enter key pressed on focused element");
                         const link = $(this).find('a').attr('href');
                         if (link && link !== '#') {
                             window.location.href = link;
