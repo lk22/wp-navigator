@@ -162,7 +162,7 @@
          */
         public function admin_page() : void {
             echo '<h1>WP Navigator</h1>';
-            echo '<p>WP Navigator is a powerful plugin that allows you to create an unlimited number of navigation menus for your website.</p>';
+            echo '<p>WP Navigator is a powerful plugin that allows to navigate through the wordpress menu sections and pages</p>';
             echo '<p>Version: 1.0.0</p>';
             echo '<p>Author: Leo Knudsen</p>';
             echo '<h2>Quick usage guide</h2>';
@@ -202,8 +202,9 @@
                         echo '<p>For closing the navigator press ESC</p>';
                         echo '<div class="quick-suggestions">';
                             echo '<h2>Quick Suggestions</h2>';
-                                echo '<span data-suggestion="add-new-post">Add new post</span>';
-                                echo '<span data-suggestion="add-new-page" style="padding-left: 5px;">Add new page</span>';
+                            echo '<span data-suggestion="add-new-post" style="font-weight: bold; cursor: pointer;">Add new post</span>';
+                            echo '<span data-suggestion="add-new-page" style="padding-left: 5px; font-weight: bold; cursor: pointer;">Add new page</span>';
+                        echo '</div>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
                         echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="">';
