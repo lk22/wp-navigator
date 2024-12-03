@@ -140,11 +140,10 @@
          */
         wp_navigator.toggleNavigatorModal = () => {
             const modal = $('#wp-navigator-modal');
+
             if ( ! modal.is(":visible")) {
-                modal.find('#wp-navigator-search').focus();
-                modal.find('#wp-navigator-search').focus(); // set focus when showing the modal
+                modal.find('.typeahead');
             } 
-            //modal.find('wp-navigator-search').val() // reset input value
             modal.toggle();
         }
 

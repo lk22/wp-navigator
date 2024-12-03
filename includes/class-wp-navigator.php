@@ -17,6 +17,8 @@
         exit;
     }
 
+    require_once 'class-navigation-suggestions.php';
+
     /**
      * Main WP Navigator plugin class
      * 
@@ -55,7 +57,6 @@
          */
         public function admin_enqueue_scripts(): void {
 
-            // $backend_context = is_admin() ? true : false;
 
             wp_register_script('wp-navigator-admin-typeahead', WP_NAVIGATOR_URL . 'assets/js/dependencies/typeahead.js', ['jquery']);
             wp_enqueue_script('wp-navigator-admin-typeahead');
@@ -189,6 +190,9 @@
             if ( ! user_can( get_current_user_id(), 'manage_options' ) ) {
                 return false;
             }
+
+            $suggestions = new WP_Navigation_Suggestions();
+
             
             wp_enqueue_style('wp-navigation-admin', WP_NAVIGATOR_URL . 'assets/css/admin.css', WP_NAVIGATOR_VERSION);
             echo '<div id="wp-navigator-wrapper">
@@ -210,12 +214,13 @@
                         echo '<p>For closing the navigator press ESC</p>';
                         echo '<div class="quick-suggestions">';
                             echo '<h2>Quick Suggestions</h2>';
-                            echo '<span data-suggestion="add-new-post" style="font-weight: bold; cursor: pointer;">Add new post</span>';
-                            echo '<span data-suggestion="add-new-page" style="padding-left: 5px; font-weight: bold; cursor: pointer;">Add new page</span>';
+                            foreach ( $suggestions->get_suggestions(get_user_locale()) as $suggestion ) {
+                                echo '<span data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer;"><a href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></span><br>';
+                            }
                         echo '</div>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
-                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="" focused>';
+                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link=" autofocus>';
                         echo '<div id="wp-navigator-results"></div>';
                     echo '</div>';
                 echo '</div>';
