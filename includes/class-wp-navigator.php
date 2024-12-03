@@ -8,6 +8,11 @@
      * Author URI: http://www.wp-navigator.com
      */
 
+    /**
+     * TODO: only render navigator if admin is logged in
+     * TODO: render navigations indifferent of the context (frontend or backend)
+     */
+
     if ( ! defined( 'ABSPATH' ) ) {
         exit;
     }
@@ -49,6 +54,9 @@
          * @return void
          */
         public function admin_enqueue_scripts(): void {
+
+            // $backend_context = is_admin() ? true : false;
+
             wp_register_script('wp-navigator-admin-typeahead', WP_NAVIGATOR_URL . 'assets/js/dependencies/typeahead.js', ['jquery']);
             wp_enqueue_script('wp-navigator-admin-typeahead');
             wp_register_script('wp-navigator-admin', WP_NAVIGATOR_URL . 'assets/js/admin.js', ['jquery'], WP_NAVIGATOR_VERSION, true);
@@ -94,11 +102,11 @@
 
                 foreach ( $types as $type ) {
                     $postUrl = "post.php?post=" . $type->ID . "&action=edit";
-                    $url = (is_admin()) ? admin_url($postUrl) : admin_url('/wp-admin/' . $postUrl);
+        
                     $postTypesArray[] = [
                         ucfirst($postType) .": " . $type->post_title,
                         "",
-                        $url
+                        admin_url($postUrl)
                     ];
                 }
             }
@@ -111,11 +119,11 @@
 
                 foreach ( $types as $type ) {
                     $taxUrl = "edit-tags.php?taxonomy=post_tag&tag_ID=" . $type->term_id . "&post_type=post";
-                    $url = (is_admin()) ? admin_url($taxUrl) : admin_url('/wp-admin/' . $taxUrl);
+
                     $taxonomiesArray[] = [
                         "Taxonomy: " . $type->name,
                         "",
-                        $url
+                        admin_url($taxUrl)
                     ];
                 }
             }
@@ -207,7 +215,7 @@
                         echo '</div>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
-                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="">';
+                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="" focused>';
                         echo '<div id="wp-navigator-results"></div>';
                     echo '</div>';
                 echo '</div>';

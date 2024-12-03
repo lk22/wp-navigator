@@ -115,7 +115,9 @@
             // add event handler for showing the navigator modal
             wp_navigator.keyDown((e) => {
                 if ( 
-                    (e.ctrlKey && e.keyCode === wp_navigator.keycodes.F)
+                    (
+                        e.ctrlKey && e.keyCode === wp_navigator.keycodes.F
+                    )
                 ) {
                     wp_navigator.toggleNavigatorModal();
                 }
@@ -138,10 +140,11 @@
          */
         wp_navigator.toggleNavigatorModal = () => {
             const modal = $('#wp-navigator-modal');
-            if (modal.is(":visible")) {
-                modal.find('input').focus(); // set focus when showing the modal
-            }
-            modal.find('input').val() // reset input value
+            if ( ! modal.is(":visible")) {
+                modal.find('#wp-navigator-search').focus();
+                modal.find('#wp-navigator-search').focus(); // set focus when showing the modal
+            } 
+            //modal.find('wp-navigator-search').val() // reset input value
             modal.toggle();
         }
 
