@@ -191,8 +191,9 @@
                 return false;
             }
 
-            $suggestions = new WP_Navigation_Suggestions();
+            $backend_context = is_admin();
 
+            $suggestions = new WP_Navigation_Suggestions();
             
             wp_enqueue_style('wp-navigation-admin', WP_NAVIGATOR_URL . 'assets/css/admin.css', WP_NAVIGATOR_VERSION);
             echo '<div id="wp-navigator-wrapper">
@@ -207,15 +208,20 @@
                         // echo the wordpress logo here
                         echo "<div class='logo'>";
                             echo "<img src='" . admin_url('images/wordpress-logo.svg') . "' alt='Wordpress Logo'>";
-                        echo "</div>";
-                        echo '<h1>Wordpress Admin Navigator</h1>';
-                        echo '<p>Press control + f (macos)</p>';
-                        echo '<p>Press ctrl + n (windows)</p>';
-                        echo '<p>For closing the navigator press ESC</p>';
+                        echo "</div>"; 
                         echo '<div class="quick-suggestions">';
-                            echo '<h2>Quick Suggestions</h2>';
+                            if (  get_user_locale() == "en_US" ) {
+                                echo '<h2>Quick suggestions</h2>';
+                            } else {
+                                echo '<h2>Hurtige genveje</h2>';
+                            }
                             foreach ( $suggestions->get_suggestions(get_user_locale()) as $suggestion ) {
-                                echo '<span data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer;"><a href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></span><br>';
+
+                                if ( ! $backend_context ) {
+                                    $suggestion['url'] = admin_url($suggestion['url']);
+                                }
+ 
+                                echo '<span data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer;"><a style="color: #000000;" href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></span> ';
                             }
                         echo '</div>';
                     echo '</div>';
