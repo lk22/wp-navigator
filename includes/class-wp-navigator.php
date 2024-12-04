@@ -11,6 +11,9 @@
     /**
      * TODO: only render navigator if admin is logged in
      * TODO: render navigations indifferent of the context (frontend or backend)
+     * TODO: add support for custom post types
+     * TODO: add support for custom hotkeys
+     * TODO: add support for suggestions in terms of most used actions
      */
 
     if ( ! defined( 'ABSPATH' ) ) {
@@ -18,6 +21,7 @@
     }
 
     require_once 'class-navigation-suggestions.php';
+    require_once 'class-settings-page.php';
 
     /**
      * Main WP Navigator plugin class
@@ -39,7 +43,7 @@
          * @return void
          */
         public function init(): void {
-            add_filter('admin_menu', [$this, 'admin_menu']);
+            add_filter('admin_menu', [new WP_Navigator_Settings, 'add_settings_menu']);
             // register actions
             add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
             add_action('wp_enqueue_scripts', [$this, 'admin_enqueue_scripts']); // register the navigator when on the frontend
@@ -56,8 +60,6 @@
          * @return void
          */
         public function admin_enqueue_scripts(): void {
-
-
             wp_register_script('wp-navigator-admin-typeahead', WP_NAVIGATOR_URL . 'assets/js/dependencies/typeahead.js', ['jquery']);
             wp_enqueue_script('wp-navigator-admin-typeahead');
             wp_register_script('wp-navigator-admin', WP_NAVIGATOR_URL . 'assets/js/admin.js', ['jquery'], WP_NAVIGATOR_VERSION, true);
@@ -156,37 +158,11 @@
         }
 
         /**
-         * Register administration menu for the plugin
-         *
-         * @return void
-         */
-        public function admin_menu(): void {
-            add_menu_page('WP Navigator', 'WP Navigator', 'manage_options', 'wp-navigator', [$this, 'admin_page']);
-        }
-
-        /**
-         * rendering template for the admin page
-         *
-         * @return void
-         */
-        public function admin_page() : void {
-            echo '<h1>WP Navigator</h1>';
-            echo '<p>WP Navigator is a powerful plugin that allows to navigate through the wordpress menu sections and pages</p>';
-            echo '<p>Version: 1.0.0</p>';
-            echo '<p>Author: Leo Knudsen</p>';
-            echo '<h2>Quick usage guide</h2>';
-            echo "<p>use following keystrokes to open your navigator</p>";
-            echo "<p>ctrl + shift + f</p>";
-            echo "<p>control + f</p>";
-            echo "<p>This will open you navigation menu for quickly move to your action</p>";
-        }
-
-        /**
          * Registering navigator component to show on every admin page
          *
          * @return void
          */
-        public function register_navigator() {
+        public function register_navigator(): void {
             if ( ! user_can( get_current_user_id(), 'manage_options' ) ) {
                 return false;
             }
@@ -218,10 +194,10 @@
                             foreach ( $suggestions->get_suggestions(get_user_locale()) as $suggestion ) {
 
                                 if ( ! $backend_context ) {
-                                    $suggestion['url'] = admin_url($suggestion['url']);
+                                    $suggestion['url'] = admin_url($suggestion['url']); 
                                 }
  
-                                echo '<span data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer;"><a style="color: #000000;" href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></span> ';
+                                echo '<p data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer; margin: 0;"><a style="color: #000000;" href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></p> <br>';
                             }
                         echo '</div>';
                     echo '</div>';

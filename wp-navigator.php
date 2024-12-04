@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: WP Navigator
- * Plugin URI: http://www.wp-navigator.com
+ * Plugin URI: https://www.wp-navigator.com
  * Description: WP Navigator is a powerful plugin that allows you to create an unlimited number of navigation menus for your website.
  * Version: 1.0.0
  * Author: Leo Knudsen
- * Author URI: http://www.wp-navigator.com
+ * Author URI: https://www.wp-navigator.com
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-navigator
