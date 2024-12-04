@@ -163,9 +163,6 @@
          * @return void
          */
         public function register_navigator(): void {
-            if ( ! user_can( get_current_user_id(), 'manage_options' ) ) {
-                return false;
-            }
 
             $backend_context = is_admin();
 
