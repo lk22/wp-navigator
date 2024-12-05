@@ -36,27 +36,27 @@ if ( ! class_exists('WP_Navigation_Suggestions') ) {
             ],
             "da_DK" => [
                 "post_new" => [
-                    "label" => "Opret ny post",
+                    "label" => "Tilføj ny post",
                     "path" => "Indlæg > Tilføj nyt",
                     "url" => "post-new.php",
                 ],
                 "page_new" => [
-                    "label" => "Opret ny side",
+                    "label" => "Tilføj ny side",
                     "path" => "Sider > Tilføj ny",
                     "url" => "post-new.php?post_type=page",
                 ],
                 "user_new" => [
-                    "label" => "Opret ny bruger",
+                    "label" => "Tilføj ny bruger",
                     "path" => "Brugere > Tilføj ny",
                     "url" => "user-new.php",
                 ],
                 "category_new" => [
-                    "label" => "Opret ny kategori",
+                    "label" => "Tilføj ny kategori",
                     "path" => "Indlæg > Kategorier > Tilføj ny kategori",
                     "url" => "edit-tags.php?taxonomy=category",
                 ],
                 "tag_new" => [
-                    "label" => "Opret nyt tag",
+                    "label" => "Tilføj nyt tag",
                     "path" => "Indlæg > Tags > Tilføj ny tag",
                     "url" => "edit-tags.php?taxonomy=post_tag",
                 ],

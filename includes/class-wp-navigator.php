@@ -194,7 +194,7 @@
                                     $suggestion['url'] = admin_url($suggestion['url']); 
                                 }
  
-                                echo '<p data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer; margin: 0;"><a style="color: #000000;" href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></p> <br>';
+                                echo '<p style="display: none;" data-suggestion="' . $suggestion['path'] . '" style="font-weight: bold; cursor: pointer; margin: 0;"><a style="color: #000000;" href="' . $suggestion['url'] . '">' . $suggestion['label'] . '</a></p>';
                             }
                         echo '</div>';
                     echo '</div>';

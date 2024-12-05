@@ -16,16 +16,16 @@
             F: 70
         }
 
-        wp_navigator.substringMathcer = (string) => {
+        wp_navigator.substringMatcher = (menu) => {
             return function findMatches(q, cb) {
                 const matches = [];
                 const subStringRegex = new RegExp(q, 'i');
-                $.each(string, (i, str) => {
-                    if (subStringRegex.test(str)) {
-                        matches.push(str)
+                $.each(menu, (i, arr) => {
+                    if (subStringRegex.test(arr[0])) {
+                        matches.push(arr); // Push the matched string
                     }
-                })
-
+                });
+        
                 cb(matches);
             }
         }
@@ -52,46 +52,47 @@
          * @return void
          */
         wp_navigator.triggerEvents = () => {
+
             $('#wp-navigator-search').typeahead({
                 hint: true,
                 highlight: true,
                 minLength: 1
             }, {
                 name: 'menu',
-                source: wp_navigator.substringMathcer(wp_navigator.menu),
+                source: wp_navigator.substringMatcher(wp_navigator.menu),
                 templates: {
                     suggestion: (data) => {
                         const icon = data[6];
                         const link = data[2];
                         const title = data[0];
-
-                        // return empty if link is seperator1
-                        if ( link === 'separator1' ) {
+        
+                        // return empty if link is separator1
+                        if (link === 'separator1') {
                             return '';
                         }
-
+        
                         // give me the tabindex
                         let tabindex = 0;
-
+        
                         // if the link is a submenu
-                        if ( link === 'submenu' ) {
+                        if (link === 'submenu') {
                             tabindex = -1;
                         }
-                        
-                        let html = `<div class="tt-suggestions" tabindex="${tabindex}">`;
+        
+                        let html = `<div class="tt-suggestion" tabindex="${tabindex}">`;
                         html += `<a href="${data[2]}">`;
-                        if ( data.includes(icon) ) {
+                        if (data.includes(icon)) {
                             html += `<span class="dashicons ${icon}" style="margin-right:5px;"></span>`;
                         }
                         html += `${title}</a></div>`;
-
+        
                         return html;
                     }
                 },
                 display: (data) => {
                     return data[0];
                 }
-            })
+            });
 
             // Adjusted event handler for pressing enter on tt-cursor element
             $('.tt-suggestions').on('keydown', function(e) {
@@ -99,11 +100,6 @@
                 if (e.keyCode === wp_navigator.keycodes.ENTER || e.which === 13) {
                     // Ensure the element is focused; this is a basic check, might need adjustment for complex scenarios
                     if ($(this).hasClass('tt-cursor')) {
-                        const link = $(this).find('a').attr('href');
-                        if (link && link !== '#') {
-                            window.location.href = link;
-                            e.preventDefault(); // Prevent default to stop any further action
-                        }
                     }
                 }
             });
