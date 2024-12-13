@@ -53,10 +53,13 @@
          */
         wp_navigator.triggerEvents = () => {
 
+            // add autofocus on the search input
+            wp_navigator.container.find('#wp-navigator-search').focus();
+
             $('#wp-navigator-search').typeahead({
                 hint: true,
                 highlight: true,
-                minLength: 1
+                minLength: 1,
             }, {
                 name: 'menu',
                 source: wp_navigator.substringMatcher(wp_navigator.menu),
@@ -92,15 +95,22 @@
                 display: (data) => {
                     return data[0];
                 }
+            }).on('typeahead:select', (e, suggestion, ) => {
+                console.log(e, suggestion)
+                // traverse to the suggested link
+                const sug = $(".tt-menu .tt-cursor").find('a').attr('href');
+                // console.table([sug, suggestion, $(e.target).val()]);
+                // console.log(sug);
+                location.href = sug;
             });
 
+
             // Adjusted event handler for pressing enter on tt-cursor element
-            $('.tt-suggestions').on('keydown', function(e) {
+            $('.tt-suggestion').on('keydown', function(e) {
+
                 // Check if the Enter key is pressed
                 if (e.keyCode === wp_navigator.keycodes.ENTER || e.which === 13) {
                     // Ensure the element is focused; this is a basic check, might need adjustment for complex scenarios
-                    if ($(this).hasClass('tt-cursor')) {
-                    }
                 }
             });
 

@@ -9,11 +9,12 @@
      */
 
     /**
-     * TODO: only render navigator if admin is logged in
      * TODO: render navigations indifferent of the context (frontend or backend)
      * TODO: add support for custom post types
-     * TODO: add support for custom hotkeys
+     * TODO: add support for custom hotkeys in settings page
      * TODO: add support for suggestions in terms of most used actions
+     * TODO: add support for customizing the navigator in settings page
+     * TODO: add support for customizing the navigator with custom CSS in settings page
      */
 
     if ( ! defined( 'ABSPATH' ) ) {
@@ -162,7 +163,16 @@
          *
          * @return void
          */
-        public function register_navigator(): void {
+        public function register_navigator() {
+
+            // only reigster the navigator if the user is logged in and admin
+            if ( ! is_user_logged_in() || ! current_user_can('manage_options') ) {
+                return;
+            }
+
+            if ( is_user_logged_in() && ! current_user_can('manage_options') ) {
+                return;
+            }
 
             $backend_context = is_admin();
 
@@ -183,11 +193,7 @@
                             echo "<img src='" . admin_url('images/wordpress-logo.svg') . "' alt='Wordpress Logo'>";
                         echo "</div>"; 
                         echo '<div class="quick-suggestions">';
-                            if (  get_user_locale() == "en_US" ) {
-                                echo '<h2>Quick suggestions</h2>';
-                            } else {
-                                echo '<h2>Hurtige genveje</h2>';
-                            }
+                            echo '<h2>WordPress Navigator</h2>';
                             foreach ( $suggestions->get_suggestions(get_user_locale()) as $suggestion ) {
 
                                 if ( ! $backend_context ) {
@@ -199,7 +205,7 @@
                         echo '</div>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
-                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link=" autofocus>';
+                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="" autofocus>';
                         echo '<div id="wp-navigator-results"></div>';
                     echo '</div>';
                 echo '</div>';
