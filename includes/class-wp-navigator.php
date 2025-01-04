@@ -36,6 +36,10 @@
          */
         public function __construct() {
             add_action('init', [$this, 'init']);
+            load_textdomain(
+                'wp-navigator', 
+                WP_NAVIGATOR_PATH . 'languages/wp-navigator-' . get_locale() . '.mo'
+            );
         }
 
         /**
@@ -195,7 +199,6 @@
                         echo '<div class="quick-suggestions">';
                             echo '<h2>WordPress Navigator</h2>';
                             foreach ( $suggestions->get_suggestions(get_user_locale()) as $suggestion ) {
-
                                 if ( ! $backend_context ) {
                                     $suggestion['url'] = admin_url($suggestion['url']); 
                                 }
@@ -205,7 +208,7 @@
                         echo '</div>';
                     echo '</div>';
                     echo '<div class="dialog-body">';
-                        echo '<input type="text" id="wp-navigator-search" class="typeahead" placeholder="Search for your action" data-link="" autofocus>';
+                        echo '<input type="text" id="wp-navigator-search" placeholder="Search for your action" data-link="" autofocus>';
                         echo '<div id="wp-navigator-results"></div>';
                     echo '</div>';
                 echo '</div>';

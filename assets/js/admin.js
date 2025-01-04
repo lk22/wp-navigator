@@ -104,16 +104,7 @@
                 location.href = sug;
             });
 
-
-            // Adjusted event handler for pressing enter on tt-cursor element
-            $('.tt-suggestion').on('keydown', function(e) {
-
-                // Check if the Enter key is pressed
-                if (e.keyCode === wp_navigator.keycodes.ENTER || e.which === 13) {
-                    // Ensure the element is focused; this is a basic check, might need adjustment for complex scenarios
-                }
-            });
-
+            // toggle the modal on icon click
             wp_navigator.container.find('#wp-navigator-button').on('click', (e) => {
                 wp_navigator.toggleNavigatorModal();
             });
@@ -148,7 +139,8 @@
             const modal = $('#wp-navigator-modal');
 
             if ( ! modal.is(":visible")) {
-                modal.find('.typeahead');
+                console.log("test");
+                modal.find('#wp-navigator-search').focus();
             } 
             modal.toggle();
         }
