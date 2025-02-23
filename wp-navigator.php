@@ -49,10 +49,12 @@ if ( ! defined('WP_NAVIGATOR_ADMIN_BASE_URL') ) {
 
 if ( ! class_exists('WP_Navigator') ) {
     require_once WP_NAVIGATOR_PATH . 'includes/class-wp-navigator.php';
-
+    
     function wp_navigator() {
         return new WP_Navigator();
     }
 }
 
 add_action( 'plugins_loaded', 'wp_navigator' );
+
+require_once WP_NAVIGATOR_PATH . 'settings.php';

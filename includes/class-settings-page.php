@@ -13,73 +13,88 @@ if ( ! class_exists('WP_Navigator_Settings') ) {
          * @return void
          */
         public function add_settings_menu(): void {
-            add_menu_page("WP Navigator", "WP Navigator", "manage_options", "wp-navigator", [$this, 'admin_page']);
+            //add_options_page('WP Navigator', 'WP Navigator', 'manage_options', 'wp-navigator-settings', [$this, 'admin_page']);
         }
-        
+
         /**
-         * Registering initial settings
+         * Displaying the settings page
          *
          * @return void
          */
-        public function register_initial_settings(): void {
-            register_setting('wp-navigator-settings', 'wp-navigator-settings');
-            
-            add_settings_section('wp-navigator-settings-section', 'WP Navigator Settings', [$this, 'settings_section'], 'wp-navigator-settings');
-        }
-
-        public function settings_section(): void {
-            echo "Settings for WP Navigator";
-        }
-        
-        /**
-         * rendering settings page section
-         *
-         * @return void
-         */
-        public function admin_page() {
-            $this->register_initial_settings();
-            ob_start();
-
+        public function admin_page(): void {
             ?>
             <div class="wrap">
-                <h1>WP Navigator</h1>
-
-                <?php
-                    $this->settings_section();
-                ?>
+                <h1><?php _e('WP Navigator Settings', 'wp-navigator'); ?></h1>
                 <form method="post" action="options.php">
-                    <?php 
-                        settings_fields('wp-navigator-settings');
-                        do_settings_sections('wp-navigator-settings');
-                        $settings = get_option('wp-navigator-settings');
-                    ?> 
-                    <table class="form-table">
-                        <tr valign="top">
-                            <th scope="row">Disable WP Navigator</th>
-                            <td>
-                                <input 
-                                    type="checkbox" 
-                                    name="wp-navigator-settings[disable]" 
-                                    value="1" 
-                                    <?php echo $settings && isset($settings['disable']) ? 'checked="checked"' : ''; ?>
-                                >
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row">Enable WP Navigator on the frontend</th>
-                            <td>
-                                <input 
-                                    type="checkbox" 
-                                    name="wp-navigator-settings[enable_in_frontend]" 
-                                    value="1" 
-                                    <?php echo $settings && isset($settings["enable_in_frontend"]) ? 'chceked="checked"' : ''; ?>
-                                >
-                            </td>
-                        </tr>
-                    </table>
-                    <?php submit_button(); ?>
+                    <?php
+                    settings_fields('wp-navigator-settings');
+                    do_settings_sections('wp-navigator-settings');
+                    submit_button();
+                    ?>
                 </form>
             </div>
+            <?php
+        }
+
+        /**
+         * Registering settings
+         *
+         * @return void
+         */
+        public function register_settings(): void {
+            register_setting('wp-navigator-settings', 'wp-navigator-enable');
+            register_setting('wp-navigator-settings', 'wp-navigator-enable-in-frontend');
+            add_settings_section('wp-navigator-settings', 'WP Navigator Settings', [$this, 'wp_navigator_enable_section'], 'wp-navigator-settings');
+            
+
+            add_settings_field('wp-navigator-enable', 'Enable WP Navigator', [$this, 'enable_in_frontend_setting'], 'wp-navigator-settings', 'wp-navigator-settings');
+            add_settings_field('wp-navigator-enable-in-frontend', 'Enable WP Navigator in frontend', [$this, 'enable_wp_navigator_setting'], 'wp-navigator-settings', 'wp-navigator-settings');
+        }
+
+        /**
+         * Enabling section for WP Navigator
+         *
+         * @return void
+         */
+        public function wp_navigator_enable_section() {
+            echo "<p>Enable WP Navigator</p>";
+        }
+
+        public function enable_wp_navigator_setting() {
+            echo '<p>' . __('This is the settings field', 'wp-navigator') . '</p>';
+            $settings = get_option('wp-navigator-settings');
+            $settings = $settings ? $settings : [];
+            ?>
+                <table class="form-table">
+                    <tr>
+                        <th>
+                            <label for="wp-navigator-settings[enable]"><?php _e('Enable WP Navigator', 'wp-navigator'); ?></label>
+                        </th>
+                        <td>
+                            <input type="checkbox" name="wp-navigator-settings[enable]" id="wp-navigator-settings[enable_in_frontend]" value="1" <?php checked(1, $settings['enable'] ?? 0); ?>>
+                        </td>
+                    </tr>
+                </table>
+            <?php
+        }
+
+
+        public function enable_in_frontend_setting(): void {
+            echo '<p>' . __('This is the settings field', 'wp-navigator') . '</p>';
+
+            $settings = get_option('wp-navigator-settings');
+            $settings = $settings ? $settings : [];
+            ?>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="wp-navigator-settings[enable_in_frontend]"><?php _e('Enable WP Navigator', 'wp-navigator'); ?></label>
+                        </th>
+                        <td>
+                            <input type="checkbox" name="wp-navigator-enable-in-frontend" id="wp-navigator-settings[enable]" value="1" <?php checked(1, $settings['enable_in_frontend'] ?? 0); ?>>
+                        </td>
+                    </tr>
+                </table>
             <?php
         }
     }

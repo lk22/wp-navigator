@@ -22,6 +22,7 @@
     }
 
     require_once 'class-navigation-suggestions.php';
+    require_once 'class-settings-utility.php';
     require_once 'class-settings-page.php';
 
     /**
@@ -48,15 +49,16 @@
          * @return void
          */
         public function init(): void {
-            add_filter('admin_menu', [new WP_Navigator_Settings, 'add_settings_menu']);
             // register actions
             add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
             add_action('wp_enqueue_scripts', [$this, 'admin_enqueue_scripts']); // register the navigator when on the frontend
             add_action('admin_enqueue_styles', [$this, 'admin_enqueue_styles']);
-            add_action('admin_footer', [$this, 'register_navigator']);
+
             // register the navigator when on the frontend
-            add_action('wp_footer', [$this, 'register_navigator']);
-            add_action('admin_init', [$this, 'store_menu_structure']);
+            if ( WP_Navigator_Settings_Utility::getOption('wp_navigator_enable') ) {
+                add_action('admin_footer', [$this, 'register_navigator']);
+                add_action('admin_init', [$this, 'store_menu_structure']);
+            }
         }
 
         /**
