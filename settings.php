@@ -39,7 +39,7 @@ add_action('admin_init', 'wp_navigator_register_settincs');
 if ( ! function_exists('wp_navigator_register_settincs') ) {
    function wp_navigator_register_settincs() {
        register_setting('wp_navigator_settings', 'wp_navigator_enable');
-       register_setting('wp_navigator_settings', 'wp_bc_client_secret');
+       register_setting('wp_navigator_settings', 'wp_navigator_enable_in_frontend');
 
        add_settings_section('wp_navigator_settings', 'Navigator control section', 'wp_navigator_control_section', 'wp_navigator_settings');
        add_settings_section('wp_navigator_hotkey_settings', 'Hotkey settings', 'wp_navigator_hotkey_settings', 'wp_navigator_settings');
@@ -83,9 +83,10 @@ if ( ! function_exists('wp_navigator_enable_in_frontend_context') ) {
      * @return void
      */
    function wp_navigator_enable_in_frontend_context() {
-       $enabled_in_frontend = get_option('wp_navigator_enable_in_frontend');
+       $enabled_in_frontend = WP_Navigator_Settings_Utility::getOption('wp_navigator_enable_in_frontend');
+       var_dump($enabled_in_frontend);
        $is_enabled = $enabled_in_frontend ? 'checked' : '';
-       echo "<input type='checkbox' name='wp_navigator_enable_in_frontend');' " . $is_enabled . " />";
+       echo "<input type='checkbox' name='wp_navigator_enable_in_frontend' " . $is_enabled . " />";
    }
 }
 

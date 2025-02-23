@@ -59,6 +59,11 @@
                 add_action('admin_footer', [$this, 'register_navigator']);
                 add_action('admin_init', [$this, 'store_menu_structure']);
             }
+
+            // enable the navigator in the frontend context
+            if ( WP_Navigator_Settings_Utility::getOption('wp_navigator_enable_in_frontend') ) {
+                add_action('wp_footer', [$this, 'register_navigator']);
+            }
         }
 
         /**
