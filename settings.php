@@ -40,6 +40,8 @@ if ( ! function_exists('wp_navigator_register_settincs') ) {
    function wp_navigator_register_settincs() {
        register_setting('wp_navigator_settings', 'wp_navigator_enable');
        register_setting('wp_navigator_settings', 'wp_navigator_enable_in_frontend');
+       register_setting('wp_navigator_settings', 'wp_navigator_enable_hotkeys');
+       register_setting('wp_navigator_settings', 'wp_navigator_hotkey_selection');
 
        add_settings_section('wp_navigator_settings', 'Navigator control section', 'wp_navigator_control_section', 'wp_navigator_settings');
        add_settings_section('wp_navigator_hotkey_settings', 'Hotkey settings', 'wp_navigator_hotkey_settings', 'wp_navigator_settings');
@@ -84,7 +86,6 @@ if ( ! function_exists('wp_navigator_enable_in_frontend_context') ) {
      */
    function wp_navigator_enable_in_frontend_context() {
        $enabled_in_frontend = WP_Navigator_Settings_Utility::getOption('wp_navigator_enable_in_frontend');
-       var_dump($enabled_in_frontend);
        $is_enabled = $enabled_in_frontend ? 'checked' : '';
        echo "<input type='checkbox' name='wp_navigator_enable_in_frontend' " . $is_enabled . " />";
    }
@@ -108,7 +109,7 @@ if ( ! function_exists('wp_navigator_enable_hotkeys') ) {
      * @return void
      */
     function wp_navigator_enable_hotkeys() {
-        $enabled_hotkeys = get_option('wp_navigator_enable_hotkeys');
+        $enabled_hotkeys = WP_Navigator_Settings_Utility::getOption('wp_navigator_enable_hotkeys');
         $is_enabled = $enabled_hotkeys ? 'checked' : '';
         echo "<input type='checkbox' name='wp_navigator_enable_hotkeys' " . $is_enabled . " />";
     }
@@ -121,13 +122,16 @@ if ( ! function_exists('wp_navigator_hotkey_selection') ) {
      * @return void
      */
     function wp_navigator_hotkey_selection() {
-        $hotkey = get_option('wp_navigator_hotkey_selection');
-        $is_hotkeys_enabled = get_option('wp_navigator_enable_hotkeys');
+        $hotkey = WP_Navigator_Settings_Utility::getOption('wp_navigator_hotkey_selection');
+        $is_hotkeys_enabled = WP_Navigator_Settings_Utility::getOption('wp_navigator_enable_hotkeys');
+
         if ( $is_hotkeys_enabled ) {
             echo "<input type='text' name='wp_navigator_hotkey_selection' value='$hotkey' />";
         } else {
             echo "<input type='text' name='wp_navigator_hotkey_selection' value='' disabled />";
         }
+        echo "<p><small>Enter a single character for the hotkey, each hotkey is combined with CTRL (Windows, linux) or Command key(MacOS)</small></p>";
+        echo "<p><small>Example: 's' for CTRL + s /⌘ + s </small></p>"; 
     }
 }
 

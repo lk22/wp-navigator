@@ -7,13 +7,14 @@
          */
         const wp_navigator = {};
 
+        const hotkey_selection = wp_navigator.convertToKeyCode(wp_navigator_plugin.hotkey_selection) || 70;
+
         wp_navigator.keycodes = {
             ENTER: 13,
             UP: 38,
             DOWN: 40,
             ESCAPE: 27,
-            N: 78,
-            F: 70
+            hotkey: hotkey_selection
         }
 
         wp_navigator.substringMatcher = (menu) => {
@@ -113,7 +114,7 @@
             wp_navigator.keyDown((e) => {
                 if ( 
                     (
-                        e.ctrlKey && e.keyCode === wp_navigator.keycodes.F
+                        e.ctrlKey && e.keyCode === wp_navigator.keycodes.hotkey
                     )
                 ) {
                     wp_navigator.toggleNavigatorModal();
@@ -124,7 +125,7 @@
                 }
 
                 // make sure to toggle modal when pressing following combo on windows ctrl + shift + f
-                if ( e.ctrlKey && e.shiftKey && e.keyCode === wp_navigator.keycodes.F ) {
+                if ( e.ctrlKey && e.shiftKey && e.keyCode === wp_navigator.keycodes.hotkey ) {
                     wp_navigator.toggleNavigatorModal();
                 }
             })
@@ -163,6 +164,10 @@
             wp_navigator.container.keyup((e) => {
                 callback(e);
             })
+        }
+
+        wp_navigator.convertToKeyCode = (key) => {
+            return key.toUpperCase().charCodeAt(0);
         }
 
         wp_navigator.init();

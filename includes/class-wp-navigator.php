@@ -155,7 +155,8 @@
                 'base_url' => WP_NAVIGATOR_ADMIN_BASE_URL,
                 "menu" => get_transient('admin_menu'),
                 "submenu" => get_transient('admin_submenu'),
-                "full_menu" => $fullMenuTree
+                "full_menu" => $fullMenuTree,
+                "hotkey_selection" => WP_Navigator_Settings_Utility::getOption('wp_navigator_hotkey_selection')
             ]);
         }
 
